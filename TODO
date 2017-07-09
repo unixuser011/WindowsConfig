@@ -1,6 +1,12 @@
 #TODO
 # New features to be added
 
+Remove section where it sets Windows update to auto download and installed
+
+Remove Windows update install
+
+Remove DISM base system reset / image reset
+
 remove pre-installed apps
 
 in addition to get-appxpackage | remove-appxpackage, 
