@@ -1,0 +1,7 @@
+#TODO
+# New features to be added
+
+remove pre-installed apps
+
+in addition to get-appxpackage | remove-appxpackage, 
+add: get-appxprovisionedpackage -online | where-object {$_.packagename -like "*packageName*"} | Remove-appxprovisionedpackage -online
