@@ -1,6 +1,11 @@
 ﻿# Windows 10 Inital Setup configuration script
 ##
 
+# Copyright (C) 2017 Darius Anderson
+
+# You may use, distribute and copy this program under the terms of the GNU General Public Licen version 2, as displayed
+# in the 'LICENCE' file
+
 # DISCLAMER: This script is provided "as-is" and must be modified to fit your envrionment
 # The original developer cannot be held accountable for your failure to read the fine print
 ##
