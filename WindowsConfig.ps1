@@ -474,14 +474,6 @@ Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
 # Windows Update and image service tasks
 ##
 
-# Download latest Windows 10 Updates
-##
-Write-Host "Downloading latest Windows 10 Updates"
-
-wuauclt.exe /ResetAuthorization /detectnow /updatenow
-Start-Sleep -Seconds 600
-
-
 # Dism online image base reset
 ##
 Write-Host "Performing dism base reset"

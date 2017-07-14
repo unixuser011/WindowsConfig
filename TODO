@@ -5,8 +5,6 @@ Remove section where it sets Windows update to auto download and installed [X]
 
 Remove Windows update install
 
-Remove DISM base system reset / image reset
-
 remove pre-installed apps
 
 in addition to get-appxpackage | remove-appxpackage, 

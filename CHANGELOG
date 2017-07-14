@@ -4,3 +4,5 @@
 Added inital Licensing and copyrights
 
 Removed section where Windows updates set to auto-install, Windows updates will now notify for Download and install
+
+Removed section for Windows update, program will not install updates
