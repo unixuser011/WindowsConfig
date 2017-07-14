@@ -2,3 +2,5 @@
 # File contains all changes from one release to the other
 
 Added inital Licensing and copyrights
+
+Removed section where Windows updates set to auto-install, Windows updates will now notify for Download and install
