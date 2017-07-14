@@ -160,7 +160,7 @@ if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate")) {
 if (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")) {
     New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" | Out-Null
 }
-New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -PropertyType DWord -Value 4
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -PropertyType DWord -Value 2
 
 # Remove AutoLogger and restrict directory
 ##
@@ -481,11 +481,6 @@ Write-Host "Downloading latest Windows 10 Updates"
 wuauclt.exe /ResetAuthorization /detectnow /updatenow
 Start-Sleep -Seconds 600
 
-# Set Windows Update to Notify for Download and Install
-##
-Write-Host "Setting Windows Update to Notify for Download and Install"
-
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Type DWord -Value 2
 
 # Dism online image base reset
 ##
