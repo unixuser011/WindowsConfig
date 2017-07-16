@@ -150,9 +150,9 @@ If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimiz
 }
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization" -Name "SystemSettingsDownloadMode" -Type DWord -Value 0
 
-# Set Windows Update to Auto Download and Install (strictly for later on in script for downloading all updates, will be changed after
+# Set Windows Update to Ask for permission to download and install updates
 ##
-Write-Host "Setting Windows Update to auto"
+Write-Host "Setting Windows Update to Notify"
 
 if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate")) {
     New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" | Out-Null
