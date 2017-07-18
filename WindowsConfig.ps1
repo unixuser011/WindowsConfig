@@ -471,22 +471,6 @@ Write-Host "Disabling SMBv1"
 Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
 
 ##
-# Windows Update and image service tasks
-##
-
-# Dism online image base reset
-##
-Write-Host "Performing dism base reset"
-
-dism.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-
-# Dism online image repair
-##
-write-host "Performing dism image check and repair"
-
-dism.exe /Online /Cleanup-Image /RestoreHealth
-
-##
 # Windows End-of-script tasks
 ##
 
