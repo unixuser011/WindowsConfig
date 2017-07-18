@@ -376,87 +376,117 @@ Write-Host "Removing default bloatware"
 
 Write-Host "Removing BingWeather"
 Get-AppxPackage -AllUsers -Name Microsoft.BingWeather | Remove-AppxPackage
+Get-AppxProvisionedPackage -online | where-object {$_.packagename -like "*Microsoft.BingWeather*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing WindowsMaps"
 Get-AppxPackage -AllUsers -Name Microsoft.WindowsMaps | Remove-AppxPackage
+Get-AppxProvisionedPackage -Online | Where-Object {$_.PackageName -like "*Microsoft.WindowsMaps*"} | Remove-AppxProvisionedPackage -Online
 
 Write-Host "Removing OneConnect"
 Get-AppxPackage -AllUsers -Name Microsoft.OneConnect | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.OneConnect*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing Messaging"
 Get-AppxPackage -AllUsers -Name Microsoft.Messaging | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.Messaging*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing 3DBuilder"
 Get-AppxPackage -AllUsers -Name Microsoft.3DBuilder | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.3DBuilder*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing WindowsFeedbackHub"
 Get-AppxPackage -AllUsers -Name Microsoft.WindowsFeedbackHub | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsFeedbackHub*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing WindowsCamera"
 Get-AppxPackage -AllUsers -Name Microsoft.WindowsCamera | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsCamera*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing GetStarted"
 Get-AppxPackage -AllUsers -Name Microsoft.GetStarted | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.GetStarted*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing ZuneVideo"
 Get-AppxPackage -AllUsers -Name Microsoft.ZuneVideo | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.ZuneVideo*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing Twitter"
 Get-AppxPackage -AllUsers -Name *Twitter* | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Twitter*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing Netflix"
 Get-AppxPackage -AllUsers -Name *Netflix* | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Netflix*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing People"
 Get-AppxPackage -AllUsers -Name Microsoft.People | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.People*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing ZuneMusic"
 Get-AppxPackage -AllUsers -Name Microsoft.ZuneMusic | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.ZuneMusic*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing SkypeApp"
 Get-AppxPackage -AllUsers -Name *SkypeApp* | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*SkypeApp*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing WindowsSoundRecorder"
 Get-AppxPackage -AllUsers -Name Microsoft.WindowsSoundRecorder | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsSoundRecorder*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing MicrosoftStickyNotes"
 Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftStickyNotes*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing WindowsAlarms"
 Get-AppxPackage -AllUsers -Name Microsft.WindowsAlarms | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsAlarms*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing MicrosoftSolitaireCollection"
 Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftSolitaireCollection | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftSolitaireCollection*"} | Remove-appxprovisionedpackage -online
 
 Write-host "Removing Facebook"
 Get-AppxPackage -AllUsers -Name *Facebook* | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Facebook*"} | Remove-appxprovisionedpackage -online
 
 Write-host "Removing Minecraft"
 Get-AppxPackage -AllUsers -Name *Minecraft* | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Minecraft*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing CandyCrush"
 Get-AppxPackage -AllUsers -Name King.com.CandyCrushSodaSaga | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*King.com.CandyCrushSodaSaga*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing TuneInRadio"
 Get-AppxPackage -AllUsers -Name TuneIn.TuneInRadio | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*TuneIn.TuneInRadio*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing PicsArt PhotoStudio"
 Get-AppxPackage -AllUsers -Name 2FE3CB00.PicsArt-PhotoStudio | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*2FE3CB00.PicsArt-PhotoStudio*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing Xbox Apps"
 Get-AppxPackage -AllUsers -Name Microsoft.XboxGameCallableUI | Remove-AppxPackage
 Get-AppxPackage -AllUsers -Name Microsoft.XboxIdentityProvider | Remove-AppxPackage
 Get-AppxPackage -AllUsers -Name Microsoft.XboxSpeechToTextOverlay | Remove-AppxPackage
 Get-AppxPackage -AllUsers -Name Microsoft.XboxApp | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxGameCallableUI*"} | Remove-appxprovisionedpackage -online
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxIdentityProvider*"} | Remove-appxprovisionedpackage -online
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxSpeechToTextOverlay*"} | Remove-appxprovisionedpackage -online
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxApp*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing OfficeHub"
 Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftOfficeHub*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing OneNote"
 Get-AppxPackage -AllUsers -Name Microsoft.Office.OneNote | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.Office.OneNote*"} | Remove-appxprovisionedpackage -online
 
 Write-Host "Removing 3DViewer"
 Get-AppxPackage -AllUsers -Name Microsoft.3DViewer | Remove-AppxPackage
+get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.3DViewer*"} | Remove-appxprovisionedpackage -online
 
 # Remove New Microsoft Edge Button in IE
 ##

@@ -8,3 +8,5 @@ Removed section where Windows updates set to auto-install, Windows updates will 
 Removed section for Windows update, program will not install updates
 
 Removed Windows update and image management section
+
+Updated bloatware removal section, added code to remove new apps when new profile is created
