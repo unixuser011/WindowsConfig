@@ -5,7 +5,7 @@ Remove section where it sets Windows update to auto download and installed [X]
 
 Remove Windows update install / dism section (may add later) [X]
 
-remove pre-installed apps (links to get-appxprovisionedpackage) []
+remove pre-installed apps (links to get-appxprovisionedpackage) [X]
 
 in addition to get-appxpackage | remove-appxpackage, 
-add: get-appxprovisionedpackage -online | where-object {$_.packagename -like "*packageName*"} | Remove-appxprovisionedpackage -online []
+add: get-appxprovisionedpackage -online | where-object {$_.packagename -like "*packageName*"} | Remove-appxprovisionedpackage -online [X]
