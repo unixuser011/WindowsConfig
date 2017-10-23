@@ -292,6 +292,8 @@ Set-MpPreference -SignatureUpdateInterval 60
 Set-MpPreference -SignatureFallbackOrder {MMPC | MicrosoftUpdateServer}
 Set-MpPreference -SubmitSamplesConsent Always
 Set-MpPreference -UnknownThreatDefaultAction Quarantine
+Set-MpPreference -EnableControlledFolderAccess Enabled
+Set-MpPreference -ControlledFolderAccessProtectedFolders "C:\Users\"
 
 Get-MpPreference >> C:\WindowsDefenderSettings.txt
 
@@ -342,6 +344,7 @@ Write-Host
 ##
 Write-Host "Removing OneDrive"
 
+taskkill /f /im OneDrive.exe
 Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 $oneDrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
