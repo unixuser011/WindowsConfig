@@ -294,6 +294,8 @@ Set-MpPreference -SubmitSamplesConsent Always
 Set-MpPreference -UnknownThreatDefaultAction Quarantine
 Set-MpPreference -EnableControlledFolderAccess Enabled
 Set-MpPreference -ControlledFolderAccessProtectedFolders "C:\Users\"
+Set-MpPreference -ControlledFolderAccessAllowedApplications "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+Set-MpPreference -ControlledFolderAccessAllowedApplications "C:\Windows\System32\WindowsPowershell\v1.0\powershell_ise.exe"
 
 Get-MpPreference >> C:\WindowsDefenderSettings.txt
 
