@@ -1,11 +1,13 @@
-﻿###############################################################################################################################################
-#                                                                                                                                             #
-#                      WindowsConfig.sp1                                                                                                      #
-#                      (c) 2017, Darius Anderson, All rights reserved                                                                         #
-#          This program is provided "as-is" and must be modified for your envrionment                                                         #
-#          The orriginal designer cannon be held accontable for any issues that may arrise because of your failure to read the small print    #
-#                                                                                                                                             #
-###############################################################################################################################################
+﻿########################################################################################################################################################
+#                                                                                                                                                       #
+#                      WindowsConfig.sp1                                                                                                                #
+#                      (c) 2017, Darius Anderson, All rights reserved                                                                                   #
+#          This program is provided "as-is" and must be modified for your envrionment                                                                   #
+#          The orriginal designer cannon be held accontable for any issues that may arrise because of your failure to read the small print              #
+#          NOTE: This program containes highly optional choices, some choices may not be aplicable for your envrionment                                 #
+#          As such, it much be modified. In a future release, I may add options or flags allowing users to decide what gets run, and what doesn't       #
+#                                                                                                                                                       #
+#########################################################################################################################################################
 
 ##
 # Privicy Settings
