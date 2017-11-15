@@ -58,7 +58,7 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 ##
 Write-Host "Disabling Bing Search in Start Menu"
 
-Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type Dword -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type Dword -Value 0 -ErrorAction SilentlyContinue 
 
 # Disable Start Menu Suggestions
 ##
@@ -112,6 +112,10 @@ If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search")) {
     New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Force -ErrorAction SilentlyContinue | Out-Null
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortana" -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowContanaAboveLock" -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowSearchToUseLocation" -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "ConnectedSearchUseWeb" -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "DisableWebSearch" -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
 
 # Restrict Windows Update to Internet Download only
 ##
@@ -296,6 +300,21 @@ If ([System.Environment]::OSVersion.Build -gt 14392) {
        $action.Arguments = "add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\SessionData /t REG_DWORD /v AllowLockScreen /d 0 /f"
        $service.GetFolder("\").RegisterTaskDevinition("Disable LockScreen", $task, 6, "NT AUTHORITY\SYSTEM", $null, 4) | Out-Null
 }
+
+##
+# Remove Unwanted/unnecessary Windows Optional Features
+##
+
+# NOTE: Some services/Optional feaures thus listed may not be unwanted, but for this envrionment, they can be, at best problematic
+# Example: optional feature 'print to PDF', may cause Windows Update to download printer drivers from 2006 
+# for me, this causes problems when running the ZTIWindowsUpdate.wsf script - as this script will keep attempting to download updates and reboot
+# the presence of this service (and others) may cause an infinite install/reboot loop
+
+DISM /online /disable-windowsoptionalfeature /featurename:Microsoft-Windows-Printing-PrintToPDFServices-Packages
+DISM /online /disable-windowsoptionalfeature /featurename:Microsft-Windows-Printing-XPSServices-Package
+DISM /online /disable-windowsoptionalfeature /featurename:Xps-Foundation-Xps-Viewer
+
+# List not complete, will add more if required
 
 ##
 # Remove Unwanted Applications
