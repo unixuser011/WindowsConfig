@@ -217,6 +217,226 @@ if (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explor
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Type DWord -Value 255 -ErrorAction SilentlyContinue
 
 ##
+# Configure Windows Defender
+##
+
+# Note: this section isn't nessary for execution and thus, is purely optional, however if you are using Defender in your envrionmennt
+# this section will configure it - the same as can be done in group policy
+
+# Enable Block at first sight
+Write-Host "Enabling Block at first sight"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" | Out-Null
+}
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableIOAVProtection" -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableRealtimeMonitoring" -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "DisableBlockAtFirstSeen" -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SpynetReporting" -Value 2 -PropertyType DWord -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SubmitSamplesConsent" -Value 3 -PropertyType DWord -Force
+
+# Enable Behavior Monitoring
+Write-Host "Enabling Behavior Monitoring"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" | Out-Null
+}
+New-ItemProperty -path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableBehaviorMonitoring" -Value 0 -PropertyType DWord -Force
+
+# Enable On-Access Protection
+Write-Host "Enabling On-Access Protection"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableOnAccessProtection" -Value 0 -PropertyType DWord -Force
+
+# Enable Process Scanning
+Write-Host "Enabling Process Scanning"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableScanOnRealtimeEnable" -Value 0 -PropertyType DWord -Force
+
+# Enable bi-direction file scaninng
+Write-Host "Enable bi-directional file scanning"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "RealTimeScanDirection" -Value 0 -PropertyType DWord -Force
+
+# Enable Network Protection
+Write-Host "Enable Network Protection"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -name "DisableIntrusionPreventionSystem" -Value 0 -PropertyType DWord -Force
+
+# Disable Watson Events
+Write-Host "Disable Watson Events"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" -Name "DisableGenericReports" -Value 1 -PropertyType DWord -Force
+
+# Enable Check for updates before scan
+Write-Host "Enable check for updates before scan"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "CheckForSignaturesBeforeRunningScan" -Value 1 -PropertyType DWord -Force
+
+# Enable Scan Archive files
+Write-Host "Enable Scan Archive files"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "DisableArchiveScanning" -Value 0 -PropertyType DWord -Force
+
+# Enable email scan
+Write-Host "Enable Email Scan"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "DisableEmailScanning" -Value 0 -PropertyType DWord -Force
+
+# Enable Heuristics
+Write-Host "Enable Heuristics"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "DissbleHeuristics" -Value 0 -PropertyType DWord -Force
+
+# Enable Packed executable scanning
+Write-Host "Enable packed executable scanning"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "DisablePackedExeScanning" -Value 0 -PropertyType DWord -Force
+
+# Enable Removable Drive Scanning
+Write-Host "Enable Removable Drive Scanning"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "DisableRemovableDriveScanning" -Value 0 -PropertyType DWord -Force
+
+# Enable Reparse Point Scanning
+Write-Host "Enable Reparse Point Scanning"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "DisableReparsePointScanning" -Value 0 -PropertyType DWord -Force
+
+# Setting default scan to quick
+Write-Host "Set default scan to quick"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" -Name "ScanParameters" -Value 0 -PropertyType DWord -Force
+
+# Setting update fallback order
+Write-Host "Setting update fallback order"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" -Name "FallbackOrder" -Value "MMPC|MicrosoftUpdateServer" -PropertyType String -Force
+
+# Enable Real-item Definiton Updates
+Write-Host "Enabling real-time definiton updates"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" -Name "RealTimeSigatureDelivery" -Value 1 -PropertyType DWord -Force
+
+# Setting update interval to every hour
+Write-Host "setting update interval to every hour"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates" -Name "SignatureUpdateInterval" -Value 1 -PropertyType DWord -Force
+
+# Setting antimalware service to normal priority startup
+Write-Host "Setting antimalware service to normal priority startup"
+
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "AllowFastServiceStartup" -Value 1 -PropertyType DWord -Force
+
+# Allow service to remain running always
+Write-Host "Allow service to remain running"
+
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "ServiceKeepAlive" -Value 1 -PropertyType DWord -Force
+
+# Enable Antivirus and antispyware
+Write-Host "Enable AntiVirus and AntiSpyware"
+
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value 0 -PropertyType DWord -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiVirus" -Value 0 -PropertyType DWord -Force
+
+# Enable PUA detection
+Write-Host "Enable PUA Detection"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" -Name "MpEnablePUS" -Value 1 -PropertyType DWord -Force
+
+# Enable Exploit Guard Network Protection
+Write-Host "Enable exploit guard network protection"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard" | Out-Null
+}
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Name "EnableNetworkProtection" -Value 1 -PropertyType DWord -Force
+
+# Enable Controlled Folder Access
+Write-Host "Enable Controlled Folder Access"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard" | Out-Null
+}
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Name "EnableControlledFolderAccess" -Value 1 -PropertyType DWord -Force
+
+# Enable Early Launch AntiMalware
+Write-Host "Enable early launch antimalware"
+
+if (!(Test-Path "HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch")) {
+    New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch" -Name "DriverLoadPolicy" -Value 1 -PropertyType DWord -Force
+
+# Set Threat action to quarantine
+Write-Host "Set Threar action to quarantine"
+
+Set-MpPreference -HighThreatDefaultAction Quarantine
+Set-MpPreference -LowThreatDefaultAction Quarantine
+Set-MpPreference -ModerateThreatDefaultAction Quarantine
+Set-MpPreference -UnknownThreatDefaultAction Quarantine
+
+##
 # Service Tasks
 ##
 
@@ -231,42 +451,6 @@ Write-Host
 Write-Host "Enabling Windows Firewall"
 
 Set-NetFirewallProfile -Profile * -Enabled True -ErrorAction SilentlyContinue
-
-# Configure Windows Defender
-##
-
-Write-Host "Configuring Windows Defender"
-
-Set-MpPreference -CheckForSignaturesBeforeRunningScan $True -ErrorAction SilentlyContinue
-Set-MpPreference -DisableArchiveScanning $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableBehaviorMonitoring $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableBlockAtFirstSeen $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableEmailScanning $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableIOAVProtection $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableIntrusionPreventionSystem $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableRealtimeMonitoring $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableRemovableDriveScanning $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableScriptScanning $False -ErrorAction SilentlyContinue
-Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $True -ErrorAction SilentlyContinue
-Set-MpPreference -DisableScanningNetworkFiles $True -ErrorAction SilentlyContinue
-Set-MpPreference -HighThreatDefaultAction Quarantine -ErrorAction SilentlyContinue
-Set-MpPreference -LowThreatDefaultAction Quarantine -ErrorAction SilentlyContinue
-Set-MpPreference -MAPSReporting Advanced -ErrorAction SilentlyContinue
-Set-MpPreference -ModerateThreatDefaultAction Quarantine -ErrorAction SilentlyContinue
-Set-MpPreference -PUAProtection Enabled -ErrorAction SilentlyContinue
-Set-MpPreference -RealTimeScanDirection Both -ErrorAction SilentlyContinue
-Set-MpPreference -ScanParameters QuickScan -ErrorAction SilentlyContinue
-Set-MpPreference -ScanScheduleDay Everyday -ErrorAction SilentlyContinue
-Set-MpPreference -SevereThreatDefaultAction Quarantine -ErrorAction SilentlyContinue
-Set-MpPreference -SignatureUpdateInterval 60 -ErrorAction SilentlyContinue
-Set-MpPreference -SignatureFallbackOrder {MMPC | MicrosoftUpdateServer} -ErrorAction SilentlyContinue
-Set-MpPreference -SubmitSamplesConsent Always -ErrorAction SilentlyContinue
-Set-MpPreference -UnknownThreatDefaultAction Quarantine -ErrorAction SilentlyContinue
-Set-MpPreference -EnableControlledFolderAccess Enabled -ErrorAction SilentlyContinue
-Set-MpPreference -ControlledFolderAccessAllowedApplications "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -ErrorAction SilentlyContinue
-Set-MpPreference -ControlledFolderAccessAllowedApplications "C:\Windows\System32\WindowsPowershell\v1.0\powershell_ise.exe" -ErrorAction SilentlyContinue
-
-Get-MpPreference >> C:\WindowsDefenderSettings.txt
 
 # Disable Windows Update Automatic restart
 ##
