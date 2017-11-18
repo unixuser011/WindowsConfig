@@ -495,7 +495,7 @@ If ([System.Environment]::OSVersion.Build -gt 14392) {
 # the presence of this service (and others) may cause an infinite install/reboot loop
 
 DISM /online /disable-windowsoptionalfeature /featurename:Microsoft-Windows-Printing-PrintToPDFServices-Packages
-DISM /online /disable-windowsoptionalfeature /featurename:Microsft-Windows-Printing-XPSServices-Package
+DISM /online /disable-windowsoptionalfeature /featurename:Microsoft-Windows-Printing-XPSServices-Package
 DISM /online /disable-windowsoptionalfeature /featurename:Xps-Foundation-Xps-Viewer
 
 # List not complete, will add more if required
