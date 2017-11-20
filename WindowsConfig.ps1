@@ -9,6 +9,13 @@
 #                                                                                                                                                       #
 #########################################################################################################################################################
 
+# Ask for elevated permission
+##
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
+    Start-Process powershell.exe "-noProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    Exit
+}
+
 ##
 # Privicy Settings
 ##
@@ -494,9 +501,9 @@ If ([System.Environment]::OSVersion.Build -gt 14392) {
 # for me, this causes problems when running the ZTIWindowsUpdate.wsf script - as this script will keep attempting to download updates and reboot
 # the presence of this service (and others) may cause an infinite install/reboot loop
 
-DISM /online /disable-windowsoptionalfeature /featurename:Microsoft-Windows-Printing-PrintToPDFServices-Packages
-DISM /online /disable-windowsoptionalfeature /featurename:Microsoft-Windows-Printing-XPSServices-Package
-DISM /online /disable-windowsoptionalfeature /featurename:Xps-Foundation-Xps-Viewer
+DISM /online /disable-feature /featurename:Microsoft-Windows-Printing-PrintToPDFServices-Package /norestart
+DISM /online /disable-feature /featurename:Microsoft-Windows-Printing-XPSServices-Package /norestart
+DISM /online /disable-feature /featurename:Xps-Foundation-Xps-Viewer /norestart
 
 # List not complete, will add more if required
 
@@ -525,17 +532,17 @@ Start-Process $oneDrive "/uninstall" -NoNewWindow -Wait -ErrorAction SilentlyCon
 Start-Sleep -s 3
 Stop-Process -Name Explorer -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
 Start-Sleep -s 3
-Remove-Item "$env:USERPROFILE\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
-Remove-Item "$env:LOCAPAPPDATA\Microsoft\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
-Remove-Item "$env:PROGRAMDATA\Microsoft\Microsoft Onedrive" -Force -Recurse -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
+Remove-Item "$env:USERPROFILE\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$env:LOCAPAPPDATA\Microsoft\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$env:PROGRAMDATA\Microsoft\Microsoft Onedrive" -Force -Recurse -ErrorAction SilentlyContinue
 If (Test-Path "$env:SYSTEMDRIVE\OneDriveTemp") {
-    Remove-item "$env:SYSTEMDRIVE\OneDriveTemp" -Force -Recurse -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
+    Remove-item "$env:SYSTEMDRIVE\OneDriveTemp" -Force -Recurse -ErrorAction SilentlyContinue
 }
 If (!(Test-Path "HKCR:")) {
     New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT -ErrorAction SilentlyContinue | Out-Null
 }
-Remove-Item -Path "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
-Remove-Item -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
+Remove-Item -Path "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
+Remove-Item -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" -Recurse -ErrorAction SilentlyContinue
 
 # Remove OneDrive ads being displayed in Explorer (Creators Update)
 ##
