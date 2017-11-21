@@ -416,17 +416,6 @@ if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defe
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Name "EnableNetworkProtection" -Value 1 -PropertyType DWord -Force
 
-# Enable Controlled Folder Access
-Write-Host "Enable Controlled Folder Access"
-
-if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard")) {
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard" | Out-Null
-}
-if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection")) {
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" | Out-Null
-}
-New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Name "EnableControlledFolderAccess" -Value 1 -PropertyType DWord -Force
-
 # Enable Early Launch AntiMalware
 Write-Host "Enable early launch antimalware"
 
@@ -436,7 +425,7 @@ if (!(Test-Path "HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch")) {
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch" -Name "DriverLoadPolicy" -Value 1 -PropertyType DWord -Force
 
 # Set Threat action to quarantine
-Write-Host "Set Threar action to quarantine"
+Write-Host "Set Threat action to quarantine"
 
 Set-MpPreference -HighThreatDefaultAction Quarantine
 Set-MpPreference -LowThreatDefaultAction Quarantine
