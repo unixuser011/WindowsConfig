@@ -416,6 +416,11 @@ if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defe
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Name "EnableNetworkProtection" -Value 1 -PropertyType DWord -Force
 
+# Enable Controlled Folder Access
+Write-Host "Enable Controlled Folder Access"
+
+Set-MpPreference -EnableControlledFolderAccess Enabled
+
 # Enable Early Launch AntiMalware
 Write-Host "Enable early launch antimalware"
 
@@ -511,7 +516,7 @@ Write-Host
 Write-Host "Removing OneDrive"
 
 taskkill /f /im OneDrive.exe
-Stop-Process -Name OneDrive -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
+Stop-Process -Name OneDrive -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 $oneDrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
 If (!(Test-Path $oneDrive)) {
@@ -519,7 +524,7 @@ If (!(Test-Path $oneDrive)) {
 }
 Start-Process $oneDrive "/uninstall" -NoNewWindow -Wait -ErrorAction SilentlyContinue
 Start-Sleep -s 3
-Stop-Process -Name Explorer -ErrorAction SilentlyContinue -ErrorAction SilentlyContinue
+Stop-Process -Name Explorer -ErrorAction SilentlyContinue
 Start-Sleep -s 3
 Remove-Item "$env:USERPROFILE\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
 Remove-Item "$env:LOCAPAPPDATA\Microsoft\OneDrive" -Force -Recurse -ErrorAction SilentlyContinue
