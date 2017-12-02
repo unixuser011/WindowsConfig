@@ -53,13 +53,14 @@ Write-Host "Enabling Windows SmartScreen Filter"
 
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "SmartScreenEnabled" -Type String -Value "RequireAdmin" -ErrorAction SilentlyContinue
 
-# Raise UAC Level
+# Raise UAC Level and admin approval mode
 ##
-Write-host "Rasing UAC Level"
+Write-host "Rasing UAC Level and enabling admin approval mode"
 
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConcentPromptBehaviorAdmin" -Type DWord -Value 1 -ErrorAction SilentlyContinue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConcentPromptBehaviorUser" -Type DWord -Value 3 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorUser" -Type DWord -Value 3 -ErrorAction SilentlyContinue
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Type DWord -Value 1 -ErrorAction SilentlyContinue
 
 # Disable Bing Search in Start Menu
 ##
@@ -436,6 +437,24 @@ Set-MpPreference -HighThreatDefaultAction Quarantine
 Set-MpPreference -LowThreatDefaultAction Quarantine
 Set-MpPreference -ModerateThreatDefaultAction Quarantine
 Set-MpPreference -UnknownThreatDefaultAction Quarantine
+
+# Enable Extended cloud check
+Write-Host "Enable Extended Cloud Check"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" -Name "MpBafsExtendedTimeout" -Value 50 -PropertyType DWord -Force
+
+# Set Defender Cloud Protection Level
+# Note: This may detect legitimate files, however, you have the options to unblock or dispute this action
+
+Write-Host "Setting Cloud Protection Level"
+
+if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" | Out-Null
+}
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" -Name "MpCloudBlockLevel" -Value 4 -PropertyType DWord -Force
 
 ##
 # Service Tasks
