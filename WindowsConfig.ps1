@@ -632,7 +632,7 @@ Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftStickyNotes | Remove-AppxPack
 get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftStickyNotes*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
 
 Write-Host "Removing WindowsAlarms"
-Get-AppxPackage -AllUsers -Name Microsft.WindowsAlarms | Remove-AppxPackage -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers -Name Microsoft.WindowsAlarms | Remove-AppxPackage -ErrorAction SilentlyContinue
 get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsAlarms*"} | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
 
 Write-Host "Removing MicrosoftSolitaireCollection"
