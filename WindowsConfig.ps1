@@ -9,6 +9,8 @@
 #                                                                                                                                                       #
 #########################################################################################################################################################
 
+# Contains code from /u/Synex's Windows10Debloater script, specifically, the removal of the mixed reality portal, removal of the people icon, and the unnecessary scheduled tasks
+
 # Ask for elevated permission
 ##
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
@@ -57,10 +59,15 @@ Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer
 ##
 Write-host "Rasing UAC Level and enabling admin approval mode"
 
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Type DWord -Value 1 -ErrorAction SilentlyContinue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorUser" -Type DWord -Value 3 -ErrorAction SilentlyContinue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConcentPromptBehaviorAdmin" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConcentPromptBehaviorUser" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableInstallerDetection" -Type DWord -Value 1 -ErrorAction SilentlyContinue
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableVirtulization" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ValidateAdminCodeSignatures" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableSecureUAIPaths" -Type DWord -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "FilterAdministratorToken" -Type DWord -Value 1 -ErrorAction SilentlyContinue
 
 # Disable Bing Search in Start Menu
 ##
@@ -73,6 +80,33 @@ Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" 
 Write-Host "Disabling Start Menu Suggestions"
 
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+
+# Disable Pre-Installed Apps
+##
+Write-Host "Disabling and removing Pre-Installed/OEM apps"
+
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SlientInstalledAppsEnabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContentEnabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+Remove-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SuggestedApps" -Force -ErrorAction SilentlyContinue
+
+# Allowing uninstall of mixed reality portal
+##
+Write-Host "Allow uninstall of mixed reality portal"
+
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic" -Name "FirstRunSucceeded" -Type DWord -Value 0 -ErrorAction SilentlyContinue
+
+# Remove people icon on taskbar
+##
+Write-Host "Removing people icon on taskbar"
+
+If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People")) {
+    New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Force -ErrorAction SilentlyContinue | Out-Null
+}
+New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Type DWord -Value 0 -ErrorAction SilentlyContinue
 
 # Disable Location Tracking
 ##
@@ -223,6 +257,13 @@ if (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explor
     New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -ErrorAction SilentlyContinue | Out-Null
 }
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Type DWord -Value 255 -ErrorAction SilentlyContinue
+
+# Disable Windows Feedback Experience
+##
+
+Write-Host "Disabling Windows Feedback Experience"
+
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0 -ErrorAction SilentlyContinue
 
 ##
 # Configure Windows Defender
@@ -456,6 +497,18 @@ if (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine")) 
 }
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" -Name "MpCloudBlockLevel" -Value 4 -PropertyType DWord -Force
 
+# Enable Defender ASR Rules
+
+Write-Host "Enable Defender ASR Rules"
+
+Set-MpPreference -AttackSurfaceReductionRules_Ids BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550 -AttackSurfaceReductionRules_Actions Enabled
+Set-MpPreference -AttackSurfaceReductionRules_Ids D4F940AB-401B-4EFC-AADC-AD5F3C50688A -AttackSurfaceReductionRules_Actions Enabled
+Set-MpPreference -AttackSurfaceReductionRules_Ids 3B576869-A4EC-4529-8536-B80A7769E899 -AttackSurfaceReductionRules_Actions Enabled
+Set-MpPreference -AttackSurfaceReductionRules_Ids 75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84 -AttackSurfaceReductionRules_Actions Enabled
+Set-MpPreference -AttackSurfaceReductionRules_Ids D3E037E1-3EB8-44C8-A917-57927947596D -AttackSurfaceReductionRules_Actions Enabled
+Set-MpPreference -AttackSurfaceReductionRules_Ids 5BEB7EFE-FD9A-4556-801D-275E5FFC04CC -AttackSurfaceReductionRules_Actions Enabled
+Set-MpPreference -AttackSurfaceReductionRules_Ids 92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B -AttackSurfaceReductionRules_Actions Enabled
+
 ##
 # Service Tasks
 ##
@@ -504,6 +557,53 @@ If ([System.Environment]::OSVersion.Build -gt 14392) {
        $action.Arguments = "add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\SessionData /t REG_DWORD /v AllowLockScreen /d 0 /f"
        $service.GetFolder("\").RegisterTaskDevinition("Disable LockScreen", $task, 6, "NT AUTHORITY\SYSTEM", $null, 4) | Out-Null
 }
+
+# Removing unnecessary scheduled tasks
+##
+
+Write-Host "Removing unnecessary scheduled tasks"
+
+Get-ScheduledTask -TaskName XblGameSaveTaskLogon -ErrorAction SilentlyContinue | Disable-ScheduledTask
+Get-ScheduledTask -TaskName XblGameSaveTask -ErrorAction SilentlyContinue | Disable-ScheduledTask
+Get-ScheduledTask -TaskName Consolidator -ErrorAction SilentlyContinue | Disable-ScheduledTask
+Get-ScheduledTask -TaskName UsbCeip -ErrorAction SilentlyContinue | Disable-ScheduledTask
+Get-ScheduledTask -TaskName DmClient -ErrorAction SilentlyContinue | Disable-ScheduledTask
+Get-ScheduledTask -TaskName DmClientOnScenarioDownload -ErrorAction SilentlyContinue | Disable-ScheduledTask
+
+# Removing unnecessary registry keys
+##
+
+Write-Host "Removing unnecessary registry keys"
+
+#Background Tasks
+Remove-Item "HKCR:\Extensions\ContractId\Windows.BackgroundTasks\PackageId\46928bounde.EclipseManager_2.2.4.51_neutral__a5h4egax66k6y" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.BackgroundTasks\PackageId\ActiproSoftwareLLC.562882FEEB491_2.6.18.18_neutral__24pqs290vpjk0" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.BackgroundTasks\PackageId\Microsoft.MicrosoftOfficeHub_17.7909.7600.0_x64__8wekyb3d8bbwe" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.BackgroundTasks\PackageId\Microsoft.PPIProjection_10.0.15063.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.BackgroundTasks\PackageId\Microsoft.XboxGameCallableUI_1000.15063.0.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.BackgroundTasks\PackageId\Microsoft.XboxGameCallableUI_1000.16299.15.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+
+#Windows File
+Remove-Item "HKCR:\Extensions\ContractId\Windows.File\PackageId\ActiproSoftwareLLC.562882FEEB491_2.6.18.18_neutral__24pqs290vpjk0" -Recurse -ErrorAction SilentlyContinue
+
+#Keys to delete if not deleted by RemoveAppXPackage/RemoveAppXProvisionedPackage
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Launch\PackageId\46928bounde.EclipseManager_2.2.4.51_neutral__a5h4egax66k6y" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Launch\PackageId\ActiproSoftwareLLC.562882FEEB491_2.6.18.18_neutral__24pqs290vpjk0" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Launch\PackageId\Microsoft.PPIProjection_10.0.15063.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Launch\PackageId\Microsoft.PPIProjection_10.0.15063.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Launch\PackageId\Microsoft.XboxGameCallableUI_1000.16299.15.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+
+#Sheduled Task
+Remove-Item "HKCR:\Extensions\ContractId\Windows.PreInstalledConfigTask\PackageId\Microsoft.MicrosoftOfficeHub_17.7909.7600.0_x64__8wekyb3d8bbwe" -Recurse -ErrorAction SilentlyContinue
+
+#Windows Protocols
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Protocol\PackageId\ActiproSoftwareLLC.562882FEEB491_2.6.18.18_neutral__24pqs290vpjk0" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Protocol\PackageId\Microsoft.PPIProjection_10.0.15063.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Protocol\PackageId\Microsoft.XboxGameCallableUI_1000.15063.0.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "HKCR:\Extensions\ContractId\Windows.Protocol\PackageId\Microsoft.XboxGameCallableUI_1000.16299.15.0_neutral_neutral_cw5n1h2txyewy" -Recurse -ErrorAction SilentlyContinue
+
+#Windows Share Targets
+Remove-Item "HKCR:\Extensions\ContractId\Windows.ShareTarget\PackageId\ActiproSoftwareLLC.562882FEEB491_2.6.18.18_neutral__24pqs290vpjk0" -Recurse -ErrorAction SilentlyContinue
 
 ##
 # Remove Unwanted/unnecessary Windows Optional Features
@@ -567,118 +667,20 @@ Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
 ##
 Write-Host "Removing default bloatware"
 
-Write-Host "Removing BingWeather"
-Get-AppxPackage -AllUsers -Name Microsoft.BingWeather -ErrorAction SilentlyContinue | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxProvisionedPackage -online | where-object {$_.packagename -like "*Microsoft.BingWeather*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers |
+    Where-Object {$_.name -notlike "*Microsoft.FreshPaint*"} |
+    Where-Object {$_.Name -notlike "*Microsoft.WindowsCalculator*"} |
+    Where-Object {$_.Name -notlike "*Microsoft.WindowsStore*"} |
+    Where-Object {$_.Name -notlike "*Microsoft.Windows.Photos*"} |
+    Remove-AppxPackage -ErrorAction SilentlyContinue
 
-Write-Host "Removing WindowsMaps"
-Get-AppxPackage -AllUsers -Name Microsoft.WindowsMaps -ErrorAction SilentlyContinue | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxProvisionedPackage -Online | Where-Object {$_.PackageName -like "*Microsoft.WindowsMaps*"} -ErrorAction SilentlyContinue | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
-
-Write-Host "Removing OneConnect"
-Get-AppxPackage -AllUsers -Name Microsoft.OneConnect -ErrorAction SilentlyContinue | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.OneConnect*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing Messaging"
-Get-AppxPackage -AllUsers -Name Microsoft.Messaging -ErrorAction SilentlyContinue | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.Messaging*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing 3DBuilder"
-Get-AppxPackage -AllUsers -Name Microsoft.3DBuilder -ErrorAction SilentlyContinue | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.3DBuilder*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing WindowsFeedbackHub"
-Get-AppxPackage -AllUsers -Name Microsoft.WindowsFeedbackHub | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsFeedbackHub*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing WindowsCamera"
-Get-AppxPackage -AllUsers -Name Microsoft.WindowsCamera | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsCamera*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing GetStarted"
-Get-AppxPackage -AllUsers -Name Microsoft.GetStarted | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.GetStarted*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing ZuneVideo"
-Get-AppxPackage -AllUsers -Name Microsoft.ZuneVideo | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.ZuneVideo*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing Twitter"
-Get-AppxPackage -AllUsers -Name *Twitter* | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Twitter*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing Netflix"
-Get-AppxPackage -AllUsers -Name *Netflix* | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Netflix*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing People"
-Get-AppxPackage -AllUsers -Name Microsoft.People | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.People*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing ZuneMusic"
-Get-AppxPackage -AllUsers -Name Microsoft.ZuneMusic | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.ZuneMusic*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing SkypeApp"
-Get-AppxPackage -AllUsers -Name *SkypeApp* | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*SkypeApp*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing WindowsSoundRecorder"
-Get-AppxPackage -AllUsers -Name Microsoft.WindowsSoundRecorder | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsSoundRecorder*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing MicrosoftStickyNotes"
-Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftStickyNotes | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftStickyNotes*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing WindowsAlarms"
-Get-AppxPackage -AllUsers -Name Microsoft.WindowsAlarms | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.WindowsAlarms*"} | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing MicrosoftSolitaireCollection"
-Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftSolitaireCollection | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftSolitaireCollection*"} | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-host "Removing Facebook"
-Get-AppxPackage -AllUsers -Name *Facebook* | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Facebook*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-host "Removing Minecraft"
-Get-AppxPackage -AllUsers -Name *Minecraft* | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Minecraft*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing CandyCrush"
-Get-AppxPackage -AllUsers -Name King.com.CandyCrushSodaSaga | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*King.com.CandyCrushSodaSaga*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing TuneInRadio"
-Get-AppxPackage -AllUsers -Name TuneIn.TuneInRadio | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*TuneIn.TuneInRadio*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing PicsArt PhotoStudio"
-Get-AppxPackage -AllUsers -Name 2FE3CB00.PicsArt-PhotoStudio | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*2FE3CB00.PicsArt-PhotoStudio*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing Xbox Apps"
-Get-AppxPackage -AllUsers -Name Microsoft.XboxIdentityProvider | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxPackage -AllUsers -Name Microsoft.XboxSpeechToTextOverlay | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxPackage -AllUsers -Name Microsoft.XboxApp | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxIdentityProvider*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxSpeechToTextOverlay*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.XboxApp*"} -ErrorAction SilentlyContinue | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing OfficeHub"
-Get-AppxPackage -AllUsers -Name Microsoft.MicrosoftOfficeHub | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.MicrosoftOfficeHub*"} | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing OneNote"
-Get-AppxPackage -AllUsers -Name Microsoft.Office.OneNote | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.Office.OneNote*"} | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
-Write-Host "Removing 3DViewer"
-Get-AppxPackage -AllUsers -Name Microsoft.3DViewer | Remove-AppxPackage -ErrorAction SilentlyContinue
-get-appxprovisionedpackage -online | where-object {$_.packagename -like "*Microsoft.3DViewer*"} | Remove-appxprovisionedpackage -online -ErrorAction SilentlyContinue
-
+Get-AppxProvisionedPackage -Online |
+    Where-Object {$_.name -notlike "*Microsoft.FreshPaint*"} |
+    Where-Object {$_.Name -notlike "*Microsoft.WindowsCalculator*"} |
+    Where-Object {$_.Name -notlike "*Microsoft.WindowsStore*"} |
+    Where-Object {$_.Name -notlike "*Microsoft.Windows.Photos*"} |
+    Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+    
 # Remove New Microsoft Edge Button in IE
 ##
 Write-Host "Removing 'Open in Edge' button in IE"
